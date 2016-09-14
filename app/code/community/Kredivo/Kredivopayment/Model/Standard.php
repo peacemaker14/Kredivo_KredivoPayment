@@ -11,6 +11,8 @@ class Kredivo_Kredivopayment_Model_Standard extends Mage_Payment_Model_Method_Ab
 {
     protected $_code = 'kredivopayment';
 
+    protected $_formBlockType = 'kredivopayment/form';
+
     protected $_isInitializeNeeded     = true;
     protected $_canUseInternal         = true;
     protected $_canUseForMultishipping = false;
