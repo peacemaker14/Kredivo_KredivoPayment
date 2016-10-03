@@ -1,11 +1,32 @@
 <ul class="form-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none">
   <li>
-    <div class="kredivo_widget">
-      <img class="kredivo_tooltip" src="http://kredivo.com/tooltip/images/tooltip-banner.png">
-      <div class="kredivo_iframe">
-        <iframe style="position: absolute; left: 0px; z-index:999;" class="tooltip_iframe" id="tooltip_iframe" src="http://kredivo.com/tooltip/index.html" frameborder="0" height="329" width="496">
-        </iframe>
-      </div>
+    <div>
+      <img style="width:150px;" src="http://kredivo.com/tooltip/images/tooltip-banner.png" />
+    </div>
+
+    <a id="learn-more-kredivo-link" href="#">Learn More</a>
+    <div id="learn-more-kredivo" style="display:none;">
+      <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('learn_more_kredivo')->toHtml()?>
     </div>
   </li>
 </ul>
+
+<script type="text/javascript">
+    document.getElementById("learn-more-kredivo-link").addEventListener("click", function(event){
+        event.preventDefault();
+
+        document.getElementById("learn-more-kredivo").setAttribute("style", "display:block");
+
+        var win = new Window({className: "magento", zIndex:3000, destroyOnClose: true, recenterAuto:false, resizable: false, width:800, height:340, minimizable: false, maximizable: false, draggable: false});
+        win.setContent("learn-more-kredivo", false, false);
+        win.showCenter(true);
+
+        var window_id = win.getId();
+        document.getElementById(window_id + "_close").innerHTML = "&#x2715;";
+
+        win.setCloseCallback(function(){
+            document.getElementById("learn-more-kredivo").setAttribute("style", "display:none");
+            return true;
+        });
+    });
+</script>
