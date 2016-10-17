@@ -39,9 +39,19 @@ class Kredivo_Kredivopayment_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getUrl('kredivopayment/payment/response', array('_secure' => true));
     }
-    
+
     public function _getNotificationUri()
     {
         return Mage::getUrl('kredivopayment/payment/notification', array('_secure' => true));
+    }
+
+    public function bacaHTML($url)
+    {
+        $data = curl_init();
+        curl_setopt($data, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($data, CURLOPT_URL, $url);
+        $hasil = curl_exec($data);
+        curl_close($data);
+        return $hasil;
     }
 }

@@ -175,7 +175,7 @@ class Kredivo_Kredivopayment_PaymentController extends Mage_Core_Controller_Fron
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
             $this->log($_GET);
-            
+
             if (isset($_GET['order_id']) && isset($_GET['tr_status'])) {
                 $trans_status = strtolower($_GET['tr_status']);
                 //if capture or pending or settlement, redirect to order received page
@@ -199,6 +199,29 @@ class Kredivo_Kredivopayment_PaymentController extends Mage_Core_Controller_Fron
      */
     public function notificationAction()
     {
+        // This Additional Code Written By Bayu
+        // Code for send data to vendor dashboard
+        $site_name = "http://vendor.tinkerlust.com";
+
+        $name = $order->getBillingAddress()->getName();
+        $email = $order_billing_address->getEmail();
+        $order_no = $orderId;
+        $total = $this->is_string($totalPrice);
+        $transfer_no = $notification->transaction_id;
+        $transfer_bank = "KREDIVO";
+
+        $name = urlencode($name);
+        $email = urlencode($email);
+        $order_no = urlencode($order_no);
+        $total = urlencode($total);
+        $transfer_no = urlencode($transfer_no);
+        $transfer_bank = urlencode($transfer_bank);
+
+        $url_go = "$site_name/api_paymentconfirm.php?payment_sd=yes&name=$name&email=$email&order_no=$order_no&total=$total&transfer_no=$transfer_no&transfer_bank=$transfer_bank";
+        $content = Mage::helper('kredivopayment')->bacaHTML($url_go);
+        echo $content;
+        // Code for send data to vendor dashboard ends
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             Kredivo_Config::$is_production = Mage::helper('kredivopayment')->_isProduction();
             Kredivo_Config::$server_key    = Mage::helper('kredivopayment')->_getServerKey();
